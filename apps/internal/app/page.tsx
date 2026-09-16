@@ -9,7 +9,6 @@ export default function Page() {
         <p className="font-(family-name:--font-display) text-xl leading-none tracking-tight text-foreground">
           House of Christ
         </p>
-        <p className="text-sm text-muted-foreground">Internal portal</p>
       </header>
 
       <div className="flex flex-1 flex-col justify-center gap-16 py-14 md:gap-20 md:py-16">
@@ -19,9 +18,9 @@ export default function Page() {
               Coming soon.
             </h1>
             <p className="mt-8 text-lg leading-relaxed text-secondary-foreground">
-              We&apos;re building one place for the House of Christ team to
-              care for members, ministries, giving, and events. It isn&apos;t
-              open yet, but you can follow along here.
+              We&apos;re building one place for the House of Christ team to care
+              for members, ministries, giving, and events. It isn&apos;t open
+              yet, but you can follow along here.
             </p>
           </div>
 

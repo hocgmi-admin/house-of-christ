@@ -2,6 +2,7 @@ import { cn } from "@workspace/ui/lib/utils"
 
 import {
   getRoadmapProgress,
+  listStepTitles,
   type RoadmapStep as RoadmapStepData,
 } from "@/lib/roadmap"
 import { RoadmapStep } from "./roadmap-step"
@@ -17,7 +18,7 @@ type RoadmapProps = {
  * equal columns once there is room.
  */
 export function Roadmap({ steps, className }: RoadmapProps) {
-  const { current } = getRoadmapProgress(steps)
+  const { inProgress } = getRoadmapProgress(steps)
 
   return (
     <section
@@ -31,9 +32,9 @@ export function Roadmap({ steps, className }: RoadmapProps) {
         >
           Where things stand:
         </h2>
-        {current && (
+        {inProgress.length > 0 && (
           <p className="text-sm text-secondary-foreground">
-            &nbsp; Working on {current.title.toLowerCase()} now.
+            &nbsp; Working on {listStepTitles(inProgress)} now.
           </p>
         )}
       </div>

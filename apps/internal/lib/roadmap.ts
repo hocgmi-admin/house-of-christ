@@ -13,6 +13,13 @@ export type RoadmapStep = {
  */
 export const roadmap: RoadmapStep[] = [
   {
+    id: "branding",
+    title: "Branding",
+    description:
+      "A name, mark, colors, and type that feel like House of Christ.",
+    status: "in-progress",
+  },
+  {
     id: "internal-portal",
     title: "Internal portal",
     description:
@@ -24,13 +31,6 @@ export const roadmap: RoadmapStep[] = [
     title: "Public website",
     description:
       "A coming soon page to start, growing into the church's home online.",
-    status: "planned",
-  },
-  {
-    id: "services-management",
-    title: "Sunday management",
-    description:
-      "Plan and publish Sunday services, with times, locations, and who is serving.",
     status: "planned",
   },
   {
@@ -57,6 +57,14 @@ export const roadmapStatusLabel: Record<RoadmapStatus, string> = {
 
 export function getRoadmapProgress(steps: RoadmapStep[]) {
   const done = steps.filter((step) => step.status === "done").length
-  const current = steps.find((step) => step.status === "in-progress")
-  return { done, total: steps.length, current }
+  const inProgress = steps.filter((step) => step.status === "in-progress")
+  return { done, total: steps.length, inProgress }
+}
+
+/** Joins step titles into a sentence fragment: "a", "a and b", "a, b, and c". */
+export function listStepTitles(steps: RoadmapStep[]) {
+  const titles = steps.map((step) => step.title.toLowerCase())
+  if (titles.length <= 1) return titles.join("")
+  if (titles.length === 2) return `${titles[0]} and ${titles[1]}`
+  return `${titles.slice(0, -1).join(", ")}, and ${titles[titles.length - 1]}`
 }

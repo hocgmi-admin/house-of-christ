@@ -1,0 +1,75 @@
+name: CI
+
+# Runs on every push to any branch except main, so each commit is checked
+# before it can be merged into a release branch. Branch rules on
+# release/** and main require these jobs to pass before a pull request
+# can merge. The deploy workflow also calls this file to re-check main.
+on:
+  push:
+    branches-ignore:
+      - main
+  workflow_call:
+    inputs:
+      skip-docker-build:
+        description: Skip the Docker build check (the caller builds the image itself)
+        type: boolean
+        default: false
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Lint, typecheck, test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      # Reads the pnpm version from "packageManager" in package.json.
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+  docker:
+    name: Docker image builds
+    if: ${{ !inputs.skip-docker-build }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Builds the production image without pushing it anywhere.
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/internal/Dockerfile
+          push: false
+          cache-from: type=gha,scope=internal
+          cache-to: type=gha,scope=internal,mode=max

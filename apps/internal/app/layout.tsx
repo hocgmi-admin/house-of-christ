@@ -1,4 +1,5 @@
-import { Geist_Mono, Inter } from "next/font/google"
+import type { Metadata } from "next"
+import { Geist_Mono, Inter, Newsreader } from "next/font/google"
 
 import "@workspace/ui/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -10,6 +11,19 @@ const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 })
+
+const fontDisplay = Newsreader({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  variable: "--font-display",
+})
+
+export const metadata: Metadata = {
+  title: "House of Christ — Internal portal",
+  description:
+    "The House of Christ internal portal is coming soon. One place for the team to manage members, ministries, giving, and events.",
+}
 
 export default function RootLayout({
   children,
@@ -24,7 +38,8 @@ export default function RootLayout({
         "antialiased",
         fontMono.variable,
         "font-sans",
-        inter.variable
+        inter.variable,
+        fontDisplay.variable
       )}
     >
       <body>

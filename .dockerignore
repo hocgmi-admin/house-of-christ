@@ -1,0 +1,24 @@
+# dependencies and build output
+node_modules
+**/node_modules
+**/.next
+**/.turbo
+**/out
+**/dist
+**/build
+
+# local tooling and secrets
+.git
+.github
+.claude
+.vscode
+.idea
+.env
+.env.*
+!.env.example
+
+# misc
+.DS_Store
+**/*.log
+coverage
+README.md
